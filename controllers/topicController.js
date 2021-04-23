@@ -7,20 +7,22 @@ const userModel = require('../models/userModel');
 
 // GET (index) list of holidays
 topics.get('/', (req, res)=>{
-	//res.send('Get route is working!!!');
 
-	userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
+	userModel.findById(req.session.currentUser._id).populate('Topics').exec(( error, foundUser ) => {
 		if (error){
 
-			return res.status(400).json(error)
+			return res.status(400).json(error);
 		}
 		else{
 
-			return res.status(200).json(foundUser.topics)
-		}
-	}).populate('Topics')
+			return res.status(200).json(foundUser.topics);
 
-});
+			}
+		})
+
+	})
+
+
 
 
 // POST ROUTE
@@ -39,10 +41,10 @@ topics.post('/', (req, res)=>{
 				}
 				else{
 
-          foundUser.topics.push(createTopic)
-					foundUser.save((err, updatedModel) => {
-    res.status(201).json(createTopic)
-})
+					foundUser.topics.push(createTopic)
+						foundUser.save((err, updatedModel) => {
+	    res.status(201).json(createTopic)
+	})
 				}
 			})
 		}
@@ -55,6 +57,7 @@ topics.delete('/:id', (req, res)=>{
 
 	topicModel.findByIdAndDelete(req.params.id, (error, deletedTopic)=>{
 		if (error){
+
 			return res.status(400).json({error: error.message})
 		}
 		else if (deletedTopic === null){
@@ -84,19 +87,6 @@ topicModel.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, update
 	})
 })
 
-// PATCH ROUTE increments numbers of likes
-topics.patch('/addlikes/:id', (req, res)=>{
 
-	topicModel.findByIdAndUpdate(req.params.id, { $inc: { likes : 1} }, {new:true}, (error, updatedTopic)=>{
-		if (error){
-			return res.status(400).json({error: error.message})
-		}
-		else{
-			return res.status(200).json({
-				data: updatedTopic
-			})
-		}
-	})
-})
 
 module.exports = topics;
