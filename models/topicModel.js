@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 
 const topicsSchema = new Schema({
-    name: { type: String },
+    name: { type: String ,required:true },
 })
 
 
