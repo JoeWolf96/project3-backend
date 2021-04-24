@@ -15,7 +15,7 @@ topics.get('/', (req, res)=>{
 		}
 		else{
      console.log(foundUser);
-			return res.status(200).json(foundUser);
+			return res.status(200).json(foundUser.topics);
 
 	  	}
 		})
