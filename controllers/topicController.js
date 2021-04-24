@@ -8,16 +8,16 @@ const userModel = require('../models/userModel');
 // GET (index) list of holidays
 topics.get('/', (req, res)=>{
 
-	userModel.findById(req.session.currentUser._id).populate('Topics').exec(( error, foundUser ) => {
+	userModel.findById(req.session.currentUser._id).populate('topics').exec(( error, foundUser ) => {
 		if (error){
 
 			return res.status(400).json(error);
 		}
 		else{
+     console.log(foundUser);
+			return res.status(200).json(foundUser);
 
-			return res.status(200).json(foundUser.topics);
-
-			}
+	  	}
 		})
 
 	})
